@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0ea5e9">
+<title>Алгебра 7 · Графический метод решения систем</title>
+<style>
+:root{
+  --g1:#0ea5e9; --g2:#6366f1; --g3:#a855f7;
+  --bg:#eef6ff; --bg2:#f5f0ff; --card:#fff; --card2:#f4f8ff;
+  --ink:#111827; --muted:#5b6478; --line:#e3e9f5;
+  --l1:#ef4444; --l2:#7c3aed; --pt:#f59e0b;
+  --ok:#16a34a; --bad:#e11d48; --sh:0 12px 30px rgba(30,40,90,.10);
+}
+[data-theme="dark"]{
+  --bg:#0b1020; --bg2:#141033; --card:#171d33; --card2:#1f2745;
+  --ink:#e8edff; --muted:#a3adc9; --line:#2c3557; --sh:0 12px 30px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;color:var(--ink);
+  line-height:1.55;background:var(--bg);overflow-x:hidden;
+  background-image:radial-gradient(900px 500px at 5% -10%,rgba(14,165,233,.20),transparent 60%),
+  radial-gradient(800px 500px at 100% 0,rgba(168,85,247,.18),transparent 55%),
+  linear-gradient(180deg,var(--bg),var(--bg2));background-attachment:fixed}
+h1,h2,h3{margin:0 0 .5em;line-height:1.25}p{margin:.4em 0}
+.wrap{max-width:1080px;margin:0 auto;padding:16px 13px 50px}
+header.top{position:sticky;top:0;z-index:50;background:linear-gradient(120deg,var(--g1),var(--g2) 55%,var(--g3));
+  box-shadow:0 8px 24px rgba(60,60,180,.28);padding-top:env(safe-area-inset-top)}
+.top-in{max-width:1080px;margin:0 auto;padding:9px 13px 0}
+.top-row{display:flex;align-items:center;gap:10px}
+.logo{display:flex;gap:9px;align-items:center;color:#fff;font-weight:800}
+.logo .ico{width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:18px}
+.logo small{display:block;font-size:11px;font-weight:500;opacity:.88}
+.sp{flex:1}
+.ibtn{border:0;background:rgba(255,255,255,.2);color:#fff;width:38px;height:38px;border-radius:12px;font-size:17px;cursor:pointer}
+nav.tabs{display:flex;gap:7px;overflow-x:auto;padding:9px 0 10px;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;border:0;cursor:pointer;white-space:nowrap;padding:9px 15px;border-radius:999px;
+  font:700 14px inherit;background:rgba(255,255,255,.17);color:#fff;min-height:40px;transition:.2s}
+.tab.active{background:#fff;color:#4338ca;box-shadow:0 6px 14px rgba(0,0,0,.18)}
+[data-theme="dark"] .tab.active{background:#171d33;color:#c7d2fe}
+.pbar{height:4px;background:rgba(255,255,255,.25)}.pbar i{display:block;height:100%;width:0;
+  background:linear-gradient(90deg,#fde047,#4ade80);transition:width .6s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--sh);padding:19px;margin-bottom:16px}
+.card h2{font-size:clamp(19px,4.6vw,25px)}.card h3{font-size:clamp(16px,4vw,20px)}
+.grid{display:grid;gap:15px}.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.muted{color:var(--muted)}.small{font-size:13.5px}.center{text-align:center}
+.badge{display:inline-block;padding:6px 13px;border-radius:999px;font:800 12.5px inherit;letter-spacing:.4px;
+  text-transform:uppercase;background:linear-gradient(120deg,rgba(14,165,233,.15),rgba(168,85,247,.15));color:var(--g2)}
+.page{display:none;animation:fade .4s}.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.hero{background:linear-gradient(135deg,var(--g1),var(--g2) 52%,var(--g3));color:#fff;border:0;padding:24px 20px}
+.hero h1{font-size:clamp(22px,5.6vw,36px);margin:10px 0 8px}
+.hero .badge{background:rgba(255,255,255,.22);color:#fff}
+.hgrid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:center}
+@media(max-width:760px){.hgrid{grid-template-columns:1fr}}
+.hfig{background:#fff;border-radius:16px;padding:6px;cursor:pointer}
+[data-theme="dark"] .hfig{background:#0f1428}
+.hcap{text-align:center;font-weight:800;font-size:13.5px;color:#3730a3;padding-bottom:4px}
+[data-theme="dark"] .hcap{color:#c7d2fe}
+.goal{background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.32);border-radius:15px;padding:12px 14px;margin-top:12px}
+.goal b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.5px;opacity:.9}
+.nav-card{display:flex;gap:12px;text-align:left;width:100%;font:inherit;color:inherit;cursor:pointer;
+  border:1px solid var(--line);background:var(--card);border-radius:17px;padding:16px;transition:.22s}
+.nav-card:hover{transform:translateY(-4px);border-color:var(--g2);box-shadow:0 14px 26px rgba(60,60,180,.15)}
+.nav-card .em{flex:0 0 46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:24px;
+  background:linear-gradient(135deg,rgba(14,165,233,.16),rgba(168,85,247,.16))}
+.nav-card b{display:block}
+.steps{counter-reset:s;display:grid;gap:9px;padding:0;margin:0}
+.steps li{list-style:none;display:flex;gap:11px;align-items:center;background:var(--card2);border-radius:13px;padding:10px 13px}
+.steps li::before{counter-increment:s;content:counter(s);flex:0 0 28px;height:28px;border-radius:50%;display:grid;
+  place-items:center;color:#fff;font-weight:800;font-size:13px;background:linear-gradient(135deg,var(--g1),var(--g3))}
+.btn{border:0;cursor:pointer;font:800 15px inherit;padding:12px 20px;border-radius:14px;min-height:46px;color:#fff;
+  background:linear-gradient(135deg,var(--g1),var(--g2) 60%,var(--g3));box-shadow:0 10px 20px rgba(60,60,180,.26);
+  transition:.2s;display:inline-flex;gap:8px;align-items:center;justify-content:center}
+.btn:hover{transform:translateY(-2px)}.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn.ghost{background:var(--card2);color:var(--ink);border:1.5px solid var(--line);box-shadow:none}
+.btn.sm{padding:9px 14px;min-height:40px;font-size:14px}
+.row{display:flex;gap:9px;flex-wrap:wrap}
+.concept{border-left:6px solid var(--c)}
+.concept .head{display:flex;gap:11px;align-items:center;margin-bottom:11px}
+.concept .num{flex:0 0 38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--c);color:#fff;font-weight:900}
+.concept h2{margin:0;color:var(--c)}
+.two{display:grid;grid-template-columns:minmax(230px,340px) 1fr;gap:18px;align-items:start}
+@media(max-width:780px){.two{grid-template-columns:1fr}}
+.fig{width:100%;height:auto;display:block;background:var(--card2);border:1px solid var(--line);border-radius:15px}
+.def{background:var(--card2);border:1.5px dashed var(--c);border-radius:15px;padding:12px 14px;margin-bottom:11px}
+.def b{color:var(--c)}
+ul.ticks{padding:0;margin:8px 0;display:grid;gap:6px}
+ul.ticks li{list-style:none;padding-left:25px;position:relative;font-size:14.5px}
+ul.ticks li::before{content:"✔";position:absolute;left:0;color:var(--c,var(--g2));font-weight:900}
+.note{background:rgba(245,158,11,.13);border-left:4px solid #f59e0b;border-radius:12px;padding:11px 13px;font-size:14.2px;margin-top:10px}
+.note.blue{background:rgba(59,130,246,.12);border-color:#3b82f6}
+.note.red{background:rgba(239,68,68,.12);border-color:#ef4444}
+.note.green{background:rgba(22,163,74,.12);border-color:#16a34a}
+details{background:var(--card2);border:1px solid var(--line);border-radius:13px;padding:10px 13px;margin-top:9px}
+summary{cursor:pointer;font-weight:800;font-size:14.5px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ ";color:var(--g2)}details[open] summary::before{content:"▾ "}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:13px}
+table{border-collapse:collapse;width:100%;min-width:480px;font-size:14px;background:var(--card)}
+th,td{padding:10px 11px;text-align:left;border-bottom:1px solid var(--line)}
+th{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;font-size:12.5px;text-transform:uppercase}
+tr:last-child td{border-bottom:0}td:first-child{font-weight:800}
+.eqbox{background:var(--card2);border:1px solid var(--line);border-radius:15px;padding:13px;margin-bottom:11px}
+.eqline{font-weight:900;font-size:17px;margin-bottom:8px}
+.ctrl{display:flex;align-items:center;gap:9px;margin:6px 0;flex-wrap:wrap}
+.ctrl label{font-size:13px;font-weight:700;min-width:74px;color:var(--muted)}
+.ctrl input[type=range]{flex:1;min-width:120px;accent-color:var(--g2);height:26px}
+.ctrl input[type=number]{width:74px;padding:7px 9px;border-radius:10px;border:2px solid var(--line);
+  background:var(--card);color:var(--ink);font:700 15px inherit}
+.ctrl input[type=number]:focus{outline:0;border-color:var(--g2)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chip{border:2px solid var(--line);background:var(--card);color:inherit;font:700 13.4px inherit;padding:9px 13px;
+  border-radius:999px;cursor:pointer;min-height:41px;transition:.2s}
+.chip:hover{border-color:var(--g2)}.chip.on{border-color:var(--g2);background:rgba(99,102,241,.13)}
+.sol{border:2px solid var(--pt);border-radius:15px;padding:14px;margin-top:12px;text-align:center;
+  background:rgba(245,158,11,.10)}
+.sol b{display:block;font-size:20px;color:#b45309}
+[data-theme="dark"] .sol b{color:#fbbf24}
+.ros{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin-top:11px}
+.ro{background:var(--card2);border:1px solid var(--line);border-radius:13px;padding:9px 11px}
+.ro span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+.ro b{font-size:15.5px}
+.task{display:flex;gap:11px;background:var(--card2);border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:9px;transition:.3s}
+.task .bx{flex:0 0 25px;height:25px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;color:transparent;font-size:13px}
+.task.done{border-color:var(--ok);background:rgba(22,163,74,.10)}
+.task.done .bx{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt{display:block;width:100%;text-align:left;border:2px solid var(--line);background:var(--card);color:inherit;
+  font:inherit;font-size:15px;padding:12px 14px;border-radius:13px;cursor:pointer;margin-bottom:8px;min-height:50px;transition:.18s}
+.opt:hover{border-color:var(--g2)}
+.opt.sel{border-color:var(--g2);background:rgba(99,102,241,.12);font-weight:700}
+.opt.right{border-color:var(--ok);background:rgba(22,163,74,.15);font-weight:700}
+.opt.wrong{border-color:var(--bad);background:rgba(225,29,72,.13)}
+.opt[disabled]{cursor:default}
+.qbar{height:9px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:14px}
+.qbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--g1),var(--g3));transition:width .4s}
+.ring{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;position:relative;margin:6px auto 12px;
+  background:conic-gradient(var(--g2) calc(var(--p)*1%),var(--line) 0);transition:.8s}
+.ring::before{content:"";position:absolute;width:118px;height:118px;border-radius:50%;background:var(--card)}
+.ring span{position:relative;font-weight:900;font-size:29px}
+.rev{border:1px solid var(--line);border-left:5px solid var(--ok);border-radius:13px;padding:12px 14px;margin-bottom:9px;background:var(--card2)}
+.rev.bad{border-left-color:var(--bad)}
+.rev .qt{font-weight:800;font-size:14.6px;margin-bottom:5px}
+.rev .ex{font-size:13.4px;color:var(--muted);margin-top:6px;border-top:1px dashed var(--line);padding-top:6px}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:800}
+.pill.ok{background:rgba(22,163,74,.17);color:var(--ok)}.pill.no{background:rgba(225,29,72,.15);color:var(--bad)}
+.lad{display:flex;gap:11px;align-items:center;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;
+  border:2px solid var(--line);background:var(--card);border-radius:15px;padding:12px 14px;margin-bottom:9px;transition:.2s}
+.lad.on{border-color:var(--g2);background:linear-gradient(135deg,rgba(14,165,233,.13),rgba(168,85,247,.13));font-weight:700}
+.lad .e{font-size:25px}
+.moods{display:flex;gap:9px;flex-wrap:wrap}
+.mood{font-size:27px;width:56px;height:56px;border-radius:17px;border:2px solid var(--line);background:var(--card);cursor:pointer;transition:.2s}
+.mood.on{border-color:var(--g2);background:rgba(99,102,241,.14);transform:scale(1.08)}
+textarea{width:100%;min-height:74px;border-radius:13px;border:2px solid var(--line);background:var(--card2);
+  color:var(--ink);padding:11px 13px;font:inherit;font-size:15px;resize:vertical}
+textarea:focus{outline:0;border-color:var(--g2)}
+.chk{display:flex;gap:11px;align-items:flex-start;padding:11px 13px;border-radius:13px;background:var(--card2);
+  border:1px solid var(--line);cursor:pointer;margin-bottom:8px}
+.chk input{width:22px;height:22px;flex:0 0 22px;accent-color:#6366f1;cursor:pointer}
+.chk.done{background:rgba(22,163,74,.10);border-color:var(--ok)}
+.hwb{background:linear-gradient(135deg,#f59e0b,#6366f1 70%,#0ea5e9);color:#fff;border:0}
+.hwi{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:15px;padding:13px 15px;margin-top:11px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,90px);z-index:99;opacity:0;pointer-events:none;
+  background:linear-gradient(135deg,var(--g1),var(--g3));color:#fff;padding:12px 21px;border-radius:999px;font-weight:800;
+  box-shadow:0 14px 28px rgba(60,60,180,.4);transition:.42s}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.cf{position:fixed;top:-14px;width:9px;height:14px;border-radius:2px;z-index:98;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.15}}
+footer.ft{text-align:center;color:var(--muted);font-size:13px;padding:6px 13px 30px}
+@media print{header.top,.no-print,footer.ft{display:none!important}.page{display:none!important}.page.active{display:block!important}body{background:#fff}}
+</style>
+</head>
+<body>
+
+<header class="top no-print">
+  <div class="top-in">
+    <div class="top-row">
+      <div class="logo"><div class="ico">📈</div><div>Алгебра · 7 класс<small>ЦО 7.4.2.4 · Графический метод</small></div></div>
+      <div class="sp"></div><button class="ibtn" id="themeBtn">🌙</button>
+    </div>
+    <nav class="tabs">
+      <button class="tab active" data-go="home">🏠 Главная</button>
+      <button class="tab" data-go="theory">📘 Теория</button>
+      <button class="tab" data-go="practice">✏️ Практикум</button>
+      <button class="tab" data-go="test">✅ Тесты</button>
+      <button class="tab" data-go="reflect">💭 Рефлексия</button>
+      <button class="tab" data-go="homework">📚 Д/З</button>
+    </nav>
+  </div>
+  <div class="pbar"><i id="topProgress"></i></div>
+</header>
+
+<main class="wrap">
+
+<!-- ГЛАВНАЯ -->
+<section class="page active" id="page-home">
+  <div class="hero card">
+    <div class="hgrid">
+      <div>
+        <span class="badge">📈 Алгебра · 7 класс</span>
+        <h1>Решение систем линейных уравнений графическим способом</h1>
+        <p>Построй две прямые — и увидишь ответ своими глазами!</p>
+        <div class="goal"><b>🎯 Цель обучения 7.4.2.4</b>Решать системы линейных уравнений графическим способом.</div>
+      </div>
+      <div>
+        <div class="hfig" id="heroBox"><svg id="heroFig"></svg><div class="hcap" id="heroCap"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h2>🚀 К концу урока я смогу</h2>
+      <ul class="ticks" style="--c:var(--g2)">
+        <li>Объяснять, что называют решением системы уравнений</li>
+        <li>Строить графики уравнений вида y = kx + b</li>
+        <li>Находить точку пересечения двух прямых</li>
+        <li>Определять число решений: 1, 0 или бесконечно много</li>
+        <li>Проверять найденное решение подстановкой</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>🗺️ Маршрут урока</h2>
+      <ol class="steps">
+        <li><div><b>Теория</b> <span class="muted small">— алгоритм и 3 случая · 10 мин</span></div></li>
+        <li><div><b>Практикум</b> <span class="muted small">— живые графики и тренажёр · 12 мин</span></div></li>
+        <li><div><b>Тест</b> <span class="muted small">— 10 вопросов · 10 мин</span></div></li>
+        <li><div><b>Рефлексия</b> <span class="muted small">— оцени себя · 3 мин</span></div></li>
+        <li><div><b>Д/З</b> <span class="muted small">— стр. 105, упр. 3.88</span></div></li>
+      </ol>
+    </div>
+  </div>
+
+  <h2 style="margin:20px 4px 11px">📂 Разделы урока</h2>
+  <div class="grid g3">
+    <button class="nav-card" data-go="theory"><div class="em">📘</div><div><b>Теория</b><span class="muted small">Определения, алгоритм, три случая</span></div></button>
+    <button class="nav-card" data-go="practice"><div class="em">✏️</div><div><b>Практикум</b><span class="muted small">Двигай ползунки — графики оживают</span></div></button>
+    <button class="nav-card" data-go="test"><div class="em">✅</div><div><b>Тесты</b><span class="muted small">10 вопросов, автопроверка</span></div></button>
+    <button class="nav-card" data-go="reflect"><div class="em">💭</div><div><b>Рефлексия</b><span class="muted small">Лестница успеха и итог</span></div></button>
+    <button class="nav-card" data-go="homework"><div class="em">📚</div><div><b>Домашнее задание</b><span class="muted small">Стр. 105, упр. 3.88</span></div></button>
+    <div class="nav-card" style="cursor:default"><div class="em">📊</div><div><b>Мой прогресс</b><span class="muted small" id="homeProgress">Начни с раздела «Теория»</span></div></div>
+  </div>
+
+  <div class="card center">
+    <h3>Готов начать? 👇</h3>
+    <p class="muted small">Работай в своём темпе — ответы сохраняются в твоём телефоне.</p>
+    <div class="row" style="justify-content:center;margin-top:8px">
+      <button class="btn" data-go="theory">📘 Начать урок</button>
+      <button class="btn ghost" data-go="practice">✏️ Сразу к графикам</button>
+    </div>
+  </div>
+</section>
+
+<!-- ТЕОРИЯ -->
+<section class="page" id="page-theory">
+  <div class="card">
+    <span class="badge">📘 Раздел 1</span>
+    <h2 style="margin-top:9px">Графический метод решения систем</h2>
+    <p class="muted">Цвета прямых одинаковы во всём приложении:
+      <b style="color:var(--l1)">красная</b> — первое уравнение,
+      <b style="color:var(--l2)">фиолетовая</b> — второе,
+      <b style="color:#b45309">оранжевая точка</b> — решение.</p>
+  </div>
+
+  <div class="card concept" style="--c:var(--g1)">
+    <div class="head"><div class="num">1</div><h2>Что такое система и её решение</h2></div>
+    <div class="two">
+      <svg class="fig" data-g="intersect"></svg>
+      <div>
+        <div class="def"><b>Определение.</b> Решением системы уравнений с двумя переменными называется <b>пара значений (x; y)</b>, которая обращает <b>каждое</b> уравнение системы в верное равенство.</div>
+        <p><b>Пример:</b> { y = x + 1 ; y = −x + 3 } → решение <b>(1; 2)</b>.</p>
+        <ul class="ticks">
+          <li>График линейного уравнения — <b>прямая линия</b></li>
+          <li>Каждая точка прямой — решение <b>своего</b> уравнения</li>
+          <li>Точка <b>пересечения</b> прямых принадлежит обеим прямым → это решение <b>системы</b></li>
+        </ul>
+        <div class="note">💡 Решить систему графически — значит <b>найти координаты точки пересечения</b> графиков.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card concept" style="--c:var(--g2)">
+    <div class="head"><div class="num">2</div><h2>Алгоритм решения</h2></div>
+    <div class="two">
+      <svg class="fig" data-g="steps"></svg>
+      <div>
+        <div class="def"><b>Запомни 5 шагов:</b></div>
+        <ol style="padding-left:20px;font-size:14.7px;line-height:1.85">
+          <li>Вырази <b>y через x</b> в каждом уравнении: y = kx + b</li>
+          <li>Составь <b>таблицу из двух точек</b> для каждой прямой</li>
+          <li>Построй <b>обе прямые</b> в одной системе координат</li>
+          <li>Найди <b>точку пересечения</b>, запиши её координаты (x; y)</li>
+          <li><b>Проверь</b> подстановкой в оба уравнения</li>
+        </ol>
+        <details open><summary>Разбор примера { y = x + 1 ; y = −x + 3 }</summary>
+          <ol>
+            <li>Оба уравнения уже в виде y = kx + b.</li>
+            <li>1-я прямая: x=0 → y=1; x=2 → y=3. Точки (0;1) и (2;3).</li>
+            <li>2-я прямая: x=0 → y=3; x=3 → y=0. Точки (0;3) и (3;0).</li>
+            <li>Прямые пересекаются в точке <b>(1; 2)</b>.</li>
+            <li>Проверка: 2 = 1 + 1 ✔ и 2 = −1 + 3 ✔</li>
+          </ol>
+          <p class="small"><b>Ответ:</b> x = 1, y = 2.</p>
+        </details>
+        <div class="note blue">🧮 Если координаты точки пересечения дробные, график даёт <b>приблизительный</b> ответ. Точный дают способы подстановки и сложения.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card concept" style="--c:var(--g3)">
+    <div class="head"><div class="num">3</div><h2>Три случая: сколько решений?</h2></div>
+    <div class="grid g3">
+      <div><svg class="fig" data-g="intersect"></svg><p class="center small"><b style="color:var(--ok)">Пересекаются → 1 решение</b><br>k₁ ≠ k₂</p></div>
+      <div><svg class="fig" data-g="parallel"></svg><p class="center small"><b style="color:var(--bad)">Параллельны → нет решений</b><br>k₁ = k₂, b₁ ≠ b₂</p></div>
+      <div><svg class="fig" data-g="same"></svg><p class="center small"><b style="color:#b45309">Совпадают → бесконечно много</b><br>k₁ = k₂, b₁ = b₂</p></div>
+    </div>
+    <div class="tw" style="margin-top:12px">
+      <table>
+        <thead><tr><th>Случай</th><th>Условие</th><th>Пример</th><th>Ответ</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--ok)">Пересекаются</td><td>k₁ ≠ k₂</td><td>y = x + 1; y = −x + 3</td><td>(1; 2)</td></tr>
+          <tr><td style="color:var(--bad)">Параллельны</td><td>k₁ = k₂, b₁ ≠ b₂</td><td>y = 2x + 1; y = 2x − 3</td><td>решений нет</td></tr>
+          <tr><td style="color:#b45309">Совпадают</td><td>k₁ = k₂, b₁ = b₂</td><td>y = 2x + 1; 4x − 2y = −2</td><td>бесконечно много</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note red">⚠️ Одинаковый k — ещё не значит «нет решений»! Обязательно сравни <b>b</b>.</div>
+  </div>
+
+  <div class="card concept" style="--c:var(--pt)">
+    <div class="head"><div class="num">4</div><h2>Как построить прямую y = kx + b</h2></div>
+    <div class="two">
+      <svg class="fig" data-g="build"></svg>
+      <div>
+        <div class="def"><b>Прямая строится по двум точкам!</b> Удобнее всего брать x = 0 и x = 2.</div>
+        <ul class="ticks">
+          <li><b>k</b> — угловой коэффициент (наклон)</li>
+          <li><b>b</b> — ордината точки пересечения с осью <b>Oy</b>: точка (0; b)</li>
+          <li><b>k &gt; 0</b> — прямая идёт вверх ↗</li>
+          <li><b>k &lt; 0</b> — прямая идёт вниз ↘</li>
+          <li><b>k = 0</b> — прямая горизонтальная →</li>
+        </ul>
+        <div class="note green">✅ <b>Лайфхак:</b> если уравнение дано в виде 2x + y = 4, вырази y: <b>y = −2x + 4</b>. Если x − 2y = 6, то <b>y = 0,5x − 3</b>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3>⭐ Плюсы и минусы метода</h3>
+      <ul class="ticks" style="--c:var(--g2)">
+        <li><b style="color:var(--ok)">+</b> Наглядно видно, что такое решение системы</li>
+        <li><b style="color:var(--ok)">+</b> Сразу понятно, сколько решений</li>
+        <li><b style="color:var(--bad)">−</b> Ответ часто приближённый</li>
+        <li><b style="color:var(--bad)">−</b> Нужны аккуратность и клетчатая бумага</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>🚫 Частые ошибки</h3>
+      <ul class="ticks" style="--c:var(--bad)">
+        <li>Неверно выразили y через x (потеряли знак)</li>
+        <li>Построили только одну прямую</li>
+        <li>Записали ответ как (y; x) — <b>сначала x!</b></li>
+        <li>Не сделали проверку подстановкой</li>
+      </ul>
+      <div class="row" style="margin-top:10px"><button class="btn" data-go="practice">✏️ Перейти к практикуму</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ПРАКТИКУМ -->
+<section class="page" id="page-practice">
+  <div class="card">
+    <span class="badge">✏️ Раздел 2</span>
+    <h2 style="margin-top:9px">Живые графики: двигай ползунки!</h2>
+    <p class="muted small">Меняй коэффициенты <b>k</b> и <b>b</b> — прямые и точка пересечения пересчитываются мгновенно.</p>
+
+    <div class="eqbox" style="border-left:5px solid var(--l1)">
+      <div class="eqline" style="color:var(--l1)" id="eq1">y = x + 1</div>
+      <div class="ctrl"><label>k₁ (наклон)</label><input type="range" id="rk1" min="-4" max="4" step="0.5"><input type="number" id="nk1" step="0.5"></div>
+      <div class="ctrl"><label>b₁ (сдвиг)</label><input type="range" id="rb1" min="-5" max="5" step="0.5"><input type="number" id="nb1" step="0.5"></div>
+    </div>
+    <div class="eqbox" style="border-left:5px solid var(--l2)">
+      <div class="eqline" style="color:var(--l2)" id="eq2">y = −x + 3</div>
+      <div class="ctrl"><label>k₂ (наклон)</label><input type="range" id="rk2" min="-4" max="4" step="0.5"><input type="number" id="nk2" step="0.5"></div>
+      <div class="ctrl"><label>b₂ (сдвиг)</label><input type="range" id="rb2" min="-5" max="5" step="0.5"><input type="number" id="nb2" step="0.5"></div>
+    </div>
+
+    <div class="chips" id="presets">
+      <button class="chip" data-p="1">Пример: (1; 2)</button>
+      <button class="chip" data-p="2">Пример: (2; 3)</button>
+      <button class="chip" data-p="3">Параллельные</button>
+      <button class="chip" data-p="4">Совпадающие</button>
+      <button class="chip" data-p="5">Горизонтальные</button>
+      <button class="chip" data-p="6">Дробный ответ</button>
+    </div>
+
+    <svg id="mainGraph" class="fig" style="max-width:520px;margin:0 auto"></svg>
+
+    <div class="sol" id="solBox">
+      <b id="solTitle">🎯 Решение</b>
+      <div id="solText" style="font-size:17px;font-weight:800"></div>
+      <div class="muted small" id="solCheck" style="margin-top:6px"></div>
+    </div>
+
+    <div class="ros" id="readouts"></div>
+    <div class="note blue" id="hint">👆 Меняй коэффициенты и следи за точкой пересечения.</div>
+  </div>
+
+  <div class="card">
+    <h2>🔍 Задания-исследования <span class="pill ok" id="taskCount">0 / 5</span></h2>
+    <p class="muted small">Выполни на чертеже выше — галочка появится сама.</p>
+    <div id="taskList"></div>
+  </div>
+
+  <div class="card">
+    <h2>🎯 Тренажёр «Найди точку пересечения»</h2>
+    <p class="muted small">Определи по графику решение системы и выбери правильный ответ.
+      Счёт: <b id="trScore">0</b> из <b id="trTotal">0</b> <span id="trStreak"></span></p>
+    <svg id="trFig" class="fig" style="max-width:440px;margin:0 auto 12px"></svg>
+    <div id="trSys" style="background:var(--card2);border:1px solid var(--line);border-radius:13px;padding:12px;text-align:center;font-weight:800;font-size:16px;margin-bottom:12px"></div>
+    <div id="trOpts"></div>
+    <div id="trFeed"></div>
+    <div class="row" style="margin-top:9px">
+      <button class="btn sm" id="trNext">Следующая система →</button>
+      <button class="btn sm ghost" id="trReset">Сбросить счёт</button>
+    </div>
+  </div>
+</section>
+
+<!-- ТЕСТЫ -->
+<section class="page" id="page-test">
+  <div id="testStart">
+    <div class="card center">
+      <span class="badge">✅ Раздел 3</span>
+      <h2 style="margin-top:9px">Тест: «Графический метод решения систем»</h2>
+      <p class="muted">10 вопросов · один правильный ответ · автоматическая проверка</p>
+      <div class="grid g3" style="margin:15px 0">
+        <div class="ro"><span>Вопросов</span><b>10</b></div>
+        <div class="ro"><span>Проходной балл</span><b>6 из 10</b></div>
+        <div class="ro"><span>Лучший результат</span><b id="bestScore">—</b></div>
+      </div>
+      <button class="btn" id="startTest">🚀 Начать тест</button>
+      <div class="note" style="text-align:left;margin-top:14px">💡 Перед тестом повтори <b>теорию</b> и поработай в <b>практикуме</b>.</div>
+    </div>
+  </div>
+
+  <div id="testQuiz" style="display:none">
+    <div class="card">
+      <div class="qbar"><i id="qProgress"></i></div>
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <span class="badge" id="qCounter">Вопрос 1 / 10</span>
+        <span class="muted small" id="qTimer">00:00</span>
+      </div>
+      <h3 id="qText" style="margin-top:10px"></h3>
+      <div id="qFigBox"></div>
+      <div id="qOpts" style="margin-top:11px"></div>
+      <div class="row" style="justify-content:space-between;margin-top:12px">
+        <button class="btn ghost sm" id="qPrev">← Назад</button>
+        <button class="btn" id="qNext" disabled>Далее →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="testResult" style="display:none">
+    <div class="card center">
+      <span class="badge">📊 Результат</span>
+      <div class="ring" id="resRing" style="--p:0"><span id="resScore">0/10</span></div>
+      <h2 id="resTitle"></h2>
+      <p class="muted" id="resText"></p>
+      <p class="small muted" id="resTime"></p>
+      <div class="row" style="justify-content:center;margin-top:10px">
+        <button class="btn" id="retryTest">🔄 Ещё раз</button>
+        <button class="btn ghost" data-go="theory">📘 Теория</button>
+        <button class="btn ghost" data-go="reflect">💭 Рефлексия</button>
+      </div>
+    </div>
+    <div class="card"><h3>🧾 Разбор ответов</h3><div id="resReview"></div></div>
+  </div>
+</section>
+
+<!-- РЕФЛЕКСИЯ -->
+<section class="page" id="page-reflect">
+  <div class="card">
+    <span class="badge">💭 Раздел 4</span>
+    <h2 style="margin-top:9px">Рефлексия</h2>
+    <p class="muted small">Ответы сохраняются в твоём телефоне — их можно скопировать и отправить учителю.</p>
+  </div>
+  <div class="card">
+    <h3>🪜 Лестница успеха</h3>
+    <div id="ladder">
+      <button class="lad" data-lv="1"><span class="e">🤔</span><div><b>1 ступень.</b> Пока трудно, нужна помощь</div></button>
+      <button class="lad" data-lv="2"><span class="e">🙂</span><div><b>2 ступень.</b> Понимаю идею, но путаюсь в построениях</div></button>
+      <button class="lad" data-lv="3"><span class="e">😃</span><div><b>3 ступень.</b> Умею решать системы графически</div></button>
+      <button class="lad" data-lv="4"><span class="e">🚀</span><div><b>4 ступень.</b> Могу объяснить однокласснику</div></button>
+    </div>
+  </div>
+  <div class="card">
+    <h3>😀 Моё настроение</h3>
+    <div class="moods" id="moods">
+      <button class="mood" data-m="😀">😀</button><button class="mood" data-m="🙂">🙂</button>
+      <button class="mood" data-m="😐">😐</button><button class="mood" data-m="😕">😕</button><button class="mood" data-m="🤯">🤯</button>
+    </div>
+  </div>
+  <div class="card"><h3>✅ Проверь свои умения</h3><div id="skills"></div></div>
+  <div class="card">
+    <h3>✍️ Закончи предложения</h3>
+    <p class="small muted">Сегодня я узнал(а), что…</p><textarea id="rf1" placeholder="Например: решение системы — это точка пересечения графиков…"></textarea>
+    <p class="small muted" style="margin-top:10px">Мне было трудно…</p><textarea id="rf2" placeholder="Например: выражать y через x…"></textarea>
+    <p class="small muted" style="margin-top:10px">Теперь я умею…</p><textarea id="rf3" placeholder="Например: находить точку пересечения прямых…"></textarea>
+    <p class="small muted" style="margin-top:10px">Вопрос учителю</p><textarea id="rf4" style="min-height:58px"></textarea>
+    <div class="row" style="margin-top:12px">
+      <button class="btn" id="rfSave">💾 Сохранить</button>
+      <button class="btn ghost" id="rfCopy">📋 Скопировать итог</button>
+      <button class="btn ghost" id="rfPrint">🖨️ Печать</button>
+    </div>
+    <div id="rfSaved" class="note green" style="display:none"></div>
+  </div>
+</section>
+
+<!-- ДЗ -->
+<section class="page" id="page-homework">
+  <div class="card hwb">
+    <span class="badge" style="background:rgba(255,255,255,.25);color:#fff">📚 Раздел 5</span>
+    <h2 style="margin-top:9px">Домашнее задание</h2>
+    <p style="opacity:.95">Срок сдачи — <b>следующий урок алгебры</b>.</p>
+    <div class="hwi"><b>1️⃣ Выучить теорию</b><p style="margin:5px 0 0">Определение решения системы, алгоритм графического метода (5 шагов), три случая расположения прямых.</p></div>
+    <div class="hwi"><b>2️⃣ Решить в тетради</b><p style="margin:5px 0 0;font-size:18px"><b>Страница 105, упражнение 3.88</b></p><p style="margin:5px 0 0;opacity:.95">Чертежи — карандашом по линейке, на клетчатой бумаге. Обязательно делай проверку.</p></div>
+  </div>
+  <div class="card">
+    <h3>☑️ Мой чек-лист <span class="pill ok" id="hwCount">0 / 4</span></h3>
+    <div id="hwList"></div>
+    <div class="note">📌 Оформление ответа: <b>«Ответ: (x; y)»</b> — сначала абсцисса x, потом ордината y.</div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>💡 Подсказки к упр. 3.88</h3>
+      <details><summary>С чего начать</summary><p class="small">Вырази y через x в каждом уравнении системы. Выпиши по две точки для каждой прямой (удобно x = 0 и x = 2 или x = 4).</p></details>
+      <details><summary>Как выбрать масштаб</summary><p class="small">1 клетка = 1 единица. Если числа большие — 1 клетка = 2 единицы, но обязательно подпиши оси.</p></details>
+      <details><summary>Если прямые параллельны</summary><p class="small">k одинаковые, b разные → «Система решений не имеет».</p></details>
+      <details><summary>Если прямые совпали</summary><p class="small">k и b одинаковые → «Система имеет бесконечно много решений».</p></details>
+    </div>
+    <div class="card">
+      <h3>🧠 Памятка на дом</h3>
+      <ul class="ticks" style="--c:var(--g2)">
+        <li>2 прямые → точка пересечения → ответ</li>
+        <li>y = kx + b: точка (0; b) + ещё одна точка</li>
+        <li>k &gt; 0 ↗, k &lt; 0 ↘, k = 0 →</li>
+        <li>k₁ ≠ k₂ → одно решение</li>
+        <li>k₁ = k₂, b₁ ≠ b₂ → решений нет</li>
+        <li>k₁ = k₂, b₁ = b₂ → бесконечно много</li>
+      </ul>
+      <div class="row" style="margin-top:9px">
+        <button class="btn sm" data-go="theory">📘 Теория</button>
+        <button class="btn sm ghost" data-go="test">✅ Тест ещё раз</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="ft no-print">Алгебра · 7 класс · ЦО 7.4.2.4 · «Графический метод решения систем» 📈</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- УТИЛИТЫ ---------- */
+var store={
+  get:function(k,d){try{var v=localStorage.getItem('alg7g_'+k);return v===null?d:JSON.parse(v);}catch(e){return d;}},
+  set:function(k,v){try{localStorage.setItem('alg7g_'+k,JSON.stringify(v));}catch(e){}}
+};
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function toast(m){var t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);}
+function fmt(n){var r=Math.round(n*100)/100;return String(r);}
+function ri(n){return Math.floor(Math.random()*n);}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=ri(i+1),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+/* ---------- НАВИГАЦИЯ ---------- */
+var PAGES=['home','theory','practice','test','reflect','homework'];
+var visited=store.get('visited',[]);
+function go(id){
+  if(PAGES.indexOf(id)<0)id='home';
+  $$('.page').forEach(function(p){p.classList.toggle('active',p.id==='page-'+id);});
+  $$('.tab').forEach(function(t){t.classList.toggle('active',t.getAttribute('data-go')===id);});
+  var at=$('.tab.active'); if(at&&at.scrollIntoView)at.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+  if(location.hash.slice(1)!==id)history.replaceState(null,'','#'+id);
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id!=='home'&&visited.indexOf(id)<0){visited.push(id);store.set('visited',visited);}
+  updateProgress();
+}
+document.addEventListener('click',function(e){
+  var b=e.target.closest?e.target.closest('[data-go]'):null;
+  if(b)go(b.getAttribute('data-go'));
+});
+window.addEventListener('hashchange',function(){go(location.hash.slice(1)||'home');});
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);$('#themeBtn').textContent=(t==='dark'?'☀️':'🌙');store.set('theme',t);}
+$('#themeBtn').onclick=function(){setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');};
+
+/* ---------- ГРАФИЧЕСКИЙ ДВИЖОК ---------- */
+var NS='http://www.w3.org/2000/svg';
+var GW=440,GH=340,GX=220,GY=170,U=30;
+function E(tag,at,par){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);if(par)par.appendChild(e);return e;}
+function PT(x,y){return {x:GX+x*U,y:GY-y*U};}
+function eqStr(k,b){
+  var s='y = ';
+  if(k===0){return 'y = '+fmt(b);}
+  if(k===1)s+='x'; else if(k===-1)s+='−x'; else s+=fmt(k)+'x';
+  if(b>0)s+=' + '+fmt(b); else if(b<0)s+=' − '+fmt(Math.abs(b));
+  return s;
+}
+function solve(k1,b1,k2,b2){
+  if(Math.abs(k1-k2)<1e-9)return null;
+  var x=(b2-b1)/(k1-k2);
+  return {x:x,y:k1*x+b1};
+}
+/* cfg = {lines:[{k,b,c,w,dash}], point:{x,y}|null, dots:[{x,y,t}], guides:bool} */
+function drawGraph(svg,cfg){
+  if(!svg)return;
+  svg.setAttribute('viewBox','0 0 '+GW+' '+GH);
+  svg.innerHTML='';
+  var g=E('g',{},svg),i,p,t;
+  for(i=-7;i<=7;i++){p=PT(i,0);E('line',{x1:p.x,y1:0,x2:p.x,y2:GH,stroke:'var(--line)','stroke-width':1},g);}
+  for(i=-5;i<=5;i++){p=PT(0,i);E('line',{x1:0,y1:p.y,x2:GW,y2:p.y,stroke:'var(--line)','stroke-width':1},g);}
+  E('line',{x1:0,y1:GY,x2:GW,y2:GY,stroke:'var(--ink)','stroke-width':2},g);
+  E('line',{x1:GX,y1:0,x2:GX,y2:GH,stroke:'var(--ink)','stroke-width':2},g);
+  E('polygon',{points:GW+','+GY+' '+(GW-9)+','+(GY-5)+' '+(GW-9)+','+(GY+5),fill:'var(--ink)'},g);
+  E('polygon',{points:GX+',0 '+(GX-5)+',9 '+(GX+5)+',9',fill:'var(--ink)'},g);
+  for(i=-7;i<=7;i++){ if(i===0)continue; p=PT(i,0);
+    t=E('text',{x:p.x,y:GY+15,'text-anchor':'middle','font-size':11,fill:'var(--muted)'},g);t.textContent=i;}
+  for(i=-5;i<=5;i++){ if(i===0)continue; p=PT(0,i);
+    t=E('text',{x:GX-7,y:p.y+4,'text-anchor':'end','font-size':11,fill:'var(--muted)'},g);t.textContent=i;}
+  t=E('text',{x:GX-8,y:GY+15,'text-anchor':'end','font-size':11,fill:'var(--muted)'},g);t.textContent='0';
+  t=E('text',{x:GW-14,y:GY-9,'font-size':14,'font-weight':700,fill:'var(--ink)'},g);t.textContent='x';
+  t=E('text',{x:GX+9,y:15,'font-size':14,'font-weight':700,fill:'var(--ink)'},g);t.textContent='y';
+
+  (cfg.lines||[]).forEach(function(L){
+    var xa=-8,xb=8,pa=PT(xa,L.k*xa+L.b),pb=PT(xb,L.k*xb+L.b);
+    var at={x1:pa.x,y1:pa.y,x2:pb.x,y2:pb.y,stroke:L.c,'stroke-width':L.w||3,'stroke-linecap':'round'};
+    if(L.dash)at['stroke-dasharray']=L.dash;
+    E('line',at,g);
+    if(L.label){
+      var lx=null,xx;
+      for(xx=3;xx>=-3;xx-=0.5){var yy=L.k*xx+L.b;if(Math.abs(yy)<4.6){lx=xx;break;}}
+      if(lx!==null){
+        var pp=PT(lx,L.k*lx+L.b);
+        var tt=E('text',{x:pp.x,y:pp.y-9,'text-anchor':'middle','font-size':13,'font-weight':800,fill:L.c,
+          'paint-order':'stroke',stroke:'var(--card2)','stroke-width':4,'stroke-linejoin':'round'},g);
+        tt.textContent=L.label;
+      }
+    }
+  });
+  if(cfg.point){
+    var q=PT(cfg.point.x,cfg.point.y);
+    if(cfg.guides!==false){
+      E('line',{x1:q.x,y1:q.y,x2:q.x,y2:GY,stroke:'var(--pt)','stroke-width':1.6,'stroke-dasharray':'5 4'},g);
+      E('line',{x1:q.x,y1:q.y,x2:GX,y2:q.y,stroke:'var(--pt)','stroke-width':1.6,'stroke-dasharray':'5 4'},g);
+    }
+    E('circle',{cx:q.x,cy:q.y,r:7,fill:'var(--pt)',stroke:'#fff','stroke-width':3},g);
+    var anchor=q.x>GW-110?'end':'start',dx=q.x>GW-110?-11:11;
+    var lt=E('text',{x:q.x+dx,y:q.y-11,'text-anchor':anchor,'font-size':14,'font-weight':800,fill:'var(--ink)',
+      'paint-order':'stroke',stroke:'var(--card2)','stroke-width':4,'stroke-linejoin':'round'},g);
+    lt.textContent='('+fmt(cfg.point.x)+'; '+fmt(cfg.point.y)+')';
+  }
+  (cfg.dots||[]).forEach(function(d){
+    var q=PT(d.x,d.y);
+    E('circle',{cx:q.x,cy:q.y,r:5.5,fill:'var(--g1)',stroke:'#fff','stroke-width':2},g);
+    var tt=E('text',{x:q.x+9,y:q.y-8,'font-size':13,'font-weight':700,fill:'var(--ink)',
+      'paint-order':'stroke',stroke:'var(--card2)','stroke-width':4},g);
+    tt.textContent=d.t||('('+fmt(d.x)+'; '+fmt(d.y)+')');
+  });
+}
+function sysCfg(k1,b1,k2,b2,withPoint,labels){
+  var s=solve(k1,b1,k2,b2);
+  return {lines:[{k:k1,b:b1,c:'var(--l1)',label:labels?eqStr(k1,b1):null},
+                 {k:k2,b:b2,c:'var(--l2)',label:labels?eqStr(k2,b2):null}],
+          point:withPoint?s:null};
+}
+
+/* ---------- ДАННЫЕ ---------- */
+var S={k1:1,b1:1,k2:-1,b2:3};
+var PRESETS={
+  '1':{k1:1,b1:1,k2:-1,b2:3},
+  '2':{k1:2,b1:-1,k2:1,b2:1},
+  '3':{k1:2,b1:1,k2:2,b2:-3},
+  '4':{k1:1.5,b1:-1,k2:1.5,b2:-1},
+  '5':{k1:0,b1:3,k2:0,b2:-2},
+  '6':{k1:1,b1:0,k2:-0.5,b2:2}
+};
+var TASKS=[
+  {id:'t1',txt:'Получи систему, решением которой является точка <b>(1; 2)</b>.',
+   test:function(){var s=solve(S.k1,S.b1,S.k2,S.b2);return !!s&&Math.abs(s.x-1)<0.02&&Math.abs(s.y-2)<0.02;}},
+  {id:'t2',txt:'Сделай прямые <b>параллельными</b> (k₁ = k₂, но b₁ ≠ b₂) — решений нет.',
+   test:function(){return Math.abs(S.k1-S.k2)<1e-9&&Math.abs(S.b1-S.b2)>1e-9;}},
+  {id:'t3',txt:'Сделай так, чтобы прямые <b>совпали</b> — решений бесконечно много.',
+   test:function(){return Math.abs(S.k1-S.k2)<1e-9&&Math.abs(S.b1-S.b2)<1e-9;}},
+  {id:'t4',txt:'Сделай первую прямую <b>горизонтальной</b> (k₁ = 0) и найди решение.',
+   test:function(){return Math.abs(S.k1)<1e-9&&Math.abs(S.k1-S.k2)>1e-9;}},
+  {id:'t5',txt:'Сделай <b>обе прямые убывающими</b> (k₁ &lt; 0 и k₂ &lt; 0), но чтобы они пересекались.',
+   test:function(){return S.k1<0&&S.k2<0&&Math.abs(S.k1-S.k2)>1e-9;}}
+];
+var tasksDone=store.get('tasks',{});
+var HW_ITEMS=['Выучить теорию: определение и алгоритм','Стр. 105, упр. 3.88 — построить графики',
+  'Стр. 105, упр. 3.88 — записать ответы','Сделать проверку подстановкой'];
+var hw=store.get('hw',[]);
+var SKILLS=['Я знаю, что такое решение системы уравнений','Я умею выражать y через x',
+  'Я умею строить прямую y = kx + b по двум точкам','Я умею находить точку пересечения по графику',
+  'Я определяю число решений по k и b'];
+var rf=store.get('reflect',{lv:0,mood:'',skills:[],t:['','','','']});
+
+/* ---------- ПРАКТИКУМ ---------- */
+function clamp(v){return Math.max(-6,Math.min(6,v));}
+function syncAll(){['k1','b1','k2','b2'].forEach(function(k){$('#r'+k).value=S[k];$('#n'+k).value=S[k];});}
+function renderPractice(){
+  $('#eq1').textContent=eqStr(S.k1,S.b1);
+  $('#eq2').textContent=eqStr(S.k2,S.b2);
+  var s=solve(S.k1,S.b1,S.k2,S.b2);
+  drawGraph($('#mainGraph'),sysCfg(S.k1,S.b1,S.k2,S.b2,true,true));
+  if(s){
+    $('#solTitle').textContent='🎯 Решение системы';
+    $('#solText').textContent='x = '+fmt(s.x)+';  y = '+fmt(s.y)+'   →   ('+fmt(s.x)+'; '+fmt(s.y)+')';
+    $('#solCheck').innerHTML='Проверка: '+fmt(s.y)+' = '+fmt(S.k1)+'·'+fmt(s.x)+' + '+fmt(S.b1)+' ✔ &nbsp;и&nbsp; '+
+      fmt(s.y)+' = '+fmt(S.k2)+'·'+fmt(s.x)+' + '+fmt(S.b2)+' ✔';
+  }else if(Math.abs(S.b1-S.b2)<1e-9){
+    $('#solTitle').textContent='♾️ Бесконечно много решений';
+    $('#solText').textContent='Прямые совпадают';
+    $('#solCheck').textContent='k₁ = k₂ и b₁ = b₂ — любая точка прямой является решением.';
+  }else{
+    $('#solTitle').textContent='🚫 Решений нет';
+    $('#solText').textContent='Прямые параллельны';
+    $('#solCheck').textContent='k₁ = k₂, но b₁ ≠ b₂ — общих точек нет.';
+  }
+  $('#readouts').innerHTML=
+    '<div class="ro"><span>Наклон k₁</span><b>'+(S.k1>0?'↗ возрастает':S.k1<0?'↘ убывает':'→ горизонт.')+'</b></div>'+
+    '<div class="ro"><span>Наклон k₂</span><b>'+(S.k2>0?'↗ возрастает':S.k2<0?'↘ убывает':'→ горизонт.')+'</b></div>'+
+    '<div class="ro"><span>Точки для 1-й</span><b>(0; '+fmt(S.b1)+'), (2; '+fmt(2*S.k1+S.b1)+')</b></div>'+
+    '<div class="ro"><span>Точки для 2-й</span><b>(0; '+fmt(S.b2)+'), (2; '+fmt(2*S.k2+S.b2)+')</b></div>';
+  $('#hint').innerHTML = !s
+    ? '⚠️ Прямые не пересекаются в единственной точке — измени k или b.'
+    : '📌 Чтобы построить эти прямые в тетради, возьми точки из карточек выше и соедини их линейкой.';
+  checkTasks();
+}
+function renderTasks(){
+  var html='';
+  TASKS.forEach(function(t,i){
+    html+='<div class="task '+(tasksDone[t.id]?'done':'')+'"><div class="bx">✓</div><div><b>'+(i+1)+'.</b> '+t.txt+'</div></div>';
+  });
+  $('#taskList').innerHTML=html;
+  var n=0;TASKS.forEach(function(t){if(tasksDone[t.id])n++;});
+  $('#taskCount').textContent=n+' / '+TASKS.length;
+}
+function checkTasks(){
+  var changed=false;
+  TASKS.forEach(function(t){
+    if(!tasksDone[t.id]){ var ok=false; try{ok=t.test();}catch(e){}
+      if(ok){tasksDone[t.id]=true;changed=true;toast('Задание выполнено! ✅');}}
+  });
+  if(changed){store.set('tasks',tasksDone);updateProgress();}
+  renderTasks();
+}
+
+/* ---------- ТРЕНАЖЁР ---------- */
+var trScore=store.get('trScore',0),trTotal=store.get('trTotal',0),trStreak=0,trAns=null,trLock=false,trCur=null;
+function trNew(){
+  trLock=false;$('#trFeed').innerHTML='';
+  var ks=[-2,-1,-0.5,0,0.5,1,2],k1,k2,x0,y0,b1,b2,tries=0;
+  do{
+    k1=ks[ri(ks.length)];k2=ks[ri(ks.length)];
+    x0=ri(7)-3;y0=ri(7)-3;
+    b1=y0-k1*x0;b2=y0-k2*x0;tries++;
+  }while(tries<300&&(k1===k2||Math.abs(b1)>5||Math.abs(b2)>5));
+  if(k1===k2){k1=1;k2=-1;b1=y0-x0;b2=y0+x0;}
+  trCur={k1:k1,b1:b1,k2:k2,b2:b2};trAns={x:x0,y:y0};
+  drawGraph($('#trFig'),sysCfg(k1,b1,k2,b2,false,true));
+  $('#trSys').innerHTML='{ '+eqStr(k1,b1)+'<br>{ '+eqStr(k2,b2);
+  var opts=['('+x0+'; '+y0+')'],guard=0;
+  var cand=['('+y0+'; '+x0+')','('+(x0+1)+'; '+y0+')','('+x0+'; '+(y0+1)+')','('+(-x0)+'; '+(-y0)+')','('+(x0-1)+'; '+(y0-1)+')'];
+  cand=shuffle(cand);
+  for(var i=0;i<cand.length&&opts.length<4;i++){if(opts.indexOf(cand[i])<0)opts.push(cand[i]);}
+  while(opts.length<4&&guard<50){var s='('+(ri(9)-4)+'; '+(ri(9)-4)+')';if(opts.indexOf(s)<0)opts.push(s);guard++;}
+  opts=shuffle(opts);
+  $('#trOpts').innerHTML=opts.map(function(o){return '<button class="opt" data-o="'+o+'">'+o+'</button>';}).join('');
+  $$('#trOpts .opt').forEach(function(b){b.onclick=function(){trCheck(b);};});
+  $('#trScore').textContent=trScore;$('#trTotal').textContent=trTotal;
+}
+function trCheck(btn){
+  if(trLock)return;trLock=true;
+  var right='('+trAns.x+'; '+trAns.y+')',ok=btn.getAttribute('data-o')===right;
+  trTotal++;if(ok){trScore++;trStreak++;}else trStreak=0;
+  store.set('trScore',trScore);store.set('trTotal',trTotal);
+  $$('#trOpts .opt').forEach(function(b){
+    b.disabled=true;
+    if(b.getAttribute('data-o')===right)b.classList.add('right');
+    else if(b===btn)b.classList.add('wrong');
+  });
+  drawGraph($('#trFig'),sysCfg(trCur.k1,trCur.b1,trCur.k2,trCur.b2,true,true));
+  $('#trFeed').innerHTML='<div class="note '+(ok?'green':'red')+'">'+(ok?'✅ <b>Верно!</b>':'❌ <b>Ошибка.</b> Правильный ответ: <b>'+right+'</b>')+
+    '<br>Проверка: '+fmt(trAns.y)+' = '+fmt(trCur.k1)+'·'+trAns.x+' + '+fmt(trCur.b1)+' ✔ и '+
+    fmt(trAns.y)+' = '+fmt(trCur.k2)+'·'+trAns.x+' + '+fmt(trCur.b2)+' ✔</div>';
+  $('#trScore').textContent=trScore;$('#trTotal').textContent=trTotal;
+  $('#trStreak').textContent=trStreak>=2?' · 🔥 серия '+trStreak:'';
+  if(ok&&trStreak%5===0)confetti(24);
+}
+
+/* ---------- ТЕСТ ---------- */
+var QUESTIONS=[
+ {q:'Что является решением системы двух линейных уравнений с двумя переменными?',
+  o:['Любая точка первой прямой','Точка пересечения графиков обоих уравнений','Точка пересечения с осью Ox','Середина отрезка между прямыми'],a:1,
+  e:'Решение системы — пара (x; y), подходящая обоим уравнениям, то есть общая точка графиков.'},
+ {q:'Сколько прямых нужно построить, чтобы решить систему двух линейных уравнений графически?',
+  o:['Одну','Две','Три','Четыре'],a:1,
+  e:'По одной прямой для каждого уравнения системы — всего две.'},
+ {q:'Прямые параллельны. Сколько решений имеет система?',
+  o:['Одно','Два','Ни одного','Бесконечно много'],a:2,
+  e:'Параллельные прямые не пересекаются → общих точек нет → решений нет.'},
+ {q:'Прямые совпадают. Сколько решений имеет система?',
+  o:['Одно','Два','Ни одного','Бесконечно много'],a:3,
+  e:'Каждая точка общей прямой подходит обоим уравнениям → решений бесконечно много.'},
+ {q:'По графику определи решение системы { y = x + 1 ; y = −x + 3',
+  fig:{k1:1,b1:1,k2:-1,b2:3},
+  o:['(2; 1)','(1; 2)','(0; 3)','(3; 0)'],a:1,
+  e:'Прямые пересекаются в точке (1; 2). Проверка: 2 = 1 + 1 ✔, 2 = −1 + 3 ✔.'},
+ {q:'По графику определи решение системы { y = 2x − 1 ; y = x + 1',
+  fig:{k1:2,b1:-1,k2:1,b2:1},
+  o:['(1; 1)','(0; −1)','(2; 3)','(3; 2)'],a:2,
+  e:'Точка пересечения — (2; 3). Проверка: 3 = 2·2 − 1 ✔, 3 = 2 + 1 ✔.'},
+ {q:'В уравнении y = kx + b коэффициент b показывает…',
+  o:['наклон прямой','ординату точки пересечения с осью Oy','абсциссу точки пересечения с осью Ox','количество решений'],a:1,
+  e:'При x = 0 получаем y = b, значит прямая проходит через точку (0; b).'},
+ {q:'Сколько решений имеет система { y = 2x + 1 ; y = 2x − 3 ?',
+  o:['Одно','Два','Ни одного','Бесконечно много'],a:2,
+  e:'k₁ = k₂ = 2, но b₁ = 1 ≠ b₂ = −3 → прямые параллельны, решений нет.'},
+ {q:'Система имеет единственное решение, если…',
+  o:['k₁ = k₂','k₁ ≠ k₂','b₁ = b₂','k₁ = k₂ и b₁ = b₂'],a:1,
+  e:'Разные угловые коэффициенты → прямые обязательно пересекаются ровно в одной точке.'},
+ {q:'Какой недостаток есть у графического способа решения системы?',
+  o:['Он не позволяет узнать число решений','Он даёт лишь приближённый ответ при дробных координатах','Он работает только для одной переменной','Он требует калькулятор'],a:1,
+  e:'Если координаты точки пересечения дробные, по чертежу их читают приближённо; точно считают подстановкой или сложением.'}
+];
+var quiz=[],qi=0,answers=[],tStart=0,tTimer=null;
+function bestText(){var b=store.get('best',null);$('#bestScore').textContent=(b===null?'—':b+' / 10');}
+function startTest(){
+  quiz=shuffle(QUESTIONS).map(function(q){
+    var opts=shuffle(q.o.map(function(t,i){return {t:t,ok:i===q.a};}));
+    return {q:q.q,fig:q.fig,e:q.e,opts:opts};
+  });
+  qi=0;answers=[];for(var i=0;i<quiz.length;i++)answers.push(null);
+  $('#testStart').style.display='none';$('#testResult').style.display='none';$('#testQuiz').style.display='block';
+  tStart=Date.now();clearInterval(tTimer);
+  tTimer=setInterval(function(){
+    var s=Math.floor((Date.now()-tStart)/1000);
+    $('#qTimer').textContent=('0'+Math.floor(s/60)).slice(-2)+':'+('0'+(s%60)).slice(-2);
+  },1000);
+  renderQ();window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderQ(){
+  var q=quiz[qi];
+  $('#qCounter').textContent='Вопрос '+(qi+1)+' / '+quiz.length;
+  $('#qProgress').style.width=(qi/quiz.length*100)+'%';
+  $('#qText').textContent=q.q;
+  if(q.fig){
+    $('#qFigBox').innerHTML='<svg id="qFig" class="fig" style="max-width:400px;margin:10px auto"></svg>';
+    drawGraph($('#qFig'),sysCfg(q.fig.k1,q.fig.b1,q.fig.k2,q.fig.b2,false,false));
+  }else $('#qFigBox').innerHTML='';
+  var letters='АБВГ';
+  $('#qOpts').innerHTML=q.opts.map(function(o,i){
+    return '<button class="opt '+(answers[qi]===i?'sel':'')+'" data-i="'+i+'"><b>'+letters[i]+'.</b> '+o.t+'</button>';
+  }).join('');
+  $$('#qOpts .opt').forEach(function(b){b.onclick=function(){answers[qi]=parseInt(b.getAttribute('data-i'),10);renderQ();};});
+  $('#qPrev').disabled=(qi===0);
+  $('#qNext').disabled=(answers[qi]===null);
+  $('#qNext').textContent=(qi===quiz.length-1?'Завершить тест ✔':'Далее →');
+}
+function finishTest(){
+  clearInterval(tTimer);
+  var secs=Math.floor((Date.now()-tStart)/1000),score=0;
+  quiz.forEach(function(q,i){if(answers[i]!==null&&q.opts[answers[i]].ok)score++;});
+  var best=store.get('best',0);if(score>best)store.set('best',score);
+  store.set('lastTest',{score:score,date:new Date().toLocaleString('ru-RU')});
+  bestText();updateProgress();
+  $('#testQuiz').style.display='none';$('#testResult').style.display='block';
+  $('#resRing').style.setProperty('--p',0);
+  setTimeout(function(){$('#resRing').style.setProperty('--p',score*10);},80);
+  $('#resScore').textContent=score+'/10';
+  var mark,title,msg;
+  if(score>=9){mark='5';title='Отлично! 🎉';msg='Ты уверенно решаешь системы графическим способом.';confetti(60);}
+  else if(score>=8){mark='4';title='Хорошо! 👏';msg='Совсем чуть-чуть до идеала — посмотри разбор ошибок.';confetti(30);}
+  else if(score>=6){mark='3';title='Зачёт, но нужно повторить 📘';msg='Повтори теорию и практикум, затем пройди тест снова.';}
+  else{mark='2';title='Нужно повторить теорию 📖';msg='Не расстраивайся! Разбери карточки теории и построй графики в практикуме.';}
+  $('#resTitle').textContent=title+' Оценка: '+mark;
+  $('#resText').innerHTML=msg+'<br>Правильных ответов: <b>'+score+' из 10 ('+(score*10)+'%)</b>';
+  $('#resTime').textContent='Время: '+Math.floor(secs/60)+' мин '+(secs%60)+' с · Лучший результат: '+Math.max(score,best)+' / 10';
+  $('#resReview').innerHTML=quiz.map(function(q,i){
+    var ok=answers[i]!==null&&q.opts[answers[i]].ok;
+    var your=answers[i]===null?'нет ответа':q.opts[answers[i]].t;
+    var right='';q.opts.forEach(function(o){if(o.ok)right=o.t;});
+    return '<div class="rev '+(ok?'':'bad')+'"><div class="qt">'+(i+1)+'. '+q.q+
+      ' <span class="pill '+(ok?'ok':'no')+'">'+(ok?'верно':'ошибка')+'</span></div>'+
+      '<div class="small">Твой ответ: <b>'+your+'</b></div>'+
+      (ok?'':'<div class="small">Правильно: <b style="color:var(--ok)">'+right+'</b></div>')+
+      '<div class="ex">💡 '+q.e+'</div></div>';
+  }).join('');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function confetti(n){
+  var cols=['#0ea5e9','#6366f1','#a855f7','#f59e0b','#22c55e','#ef4444'];
+  for(var i=0;i<n;i++){
+    var d=document.createElement('div');d.className='cf';
+    d.style.left=(Math.random()*100)+'vw';d.style.background=cols[i%cols.length];
+    d.style.animationDuration=(2+Math.random()*1.8)+'s';d.style.animationDelay=(Math.random()*0.5)+'s';
+    document.body.appendChild(d);
+    (function(el){setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},4300);})(d);
+  }
+}
+
+/* ---------- РЕФЛЕКСИЯ ---------- */
+function paintRf(){
+  $$('#ladder .lad').forEach(function(b){b.classList.toggle('on',parseInt(b.getAttribute('data-lv'),10)===rf.lv);});
+  $$('#moods .mood').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-m')===rf.mood);});
+  ['rf1','rf2','rf3','rf4'].forEach(function(id,i){$('#'+id).value=rf.t[i]||'';});
+}
+function renderSkills(){
+  $('#skills').innerHTML=SKILLS.map(function(s,i){
+    var on=rf.skills.indexOf(i)>=0;
+    return '<label class="chk '+(on?'done':'')+'"><input type="checkbox" data-sk="'+i+'" '+(on?'checked':'')+'><span>'+s+'</span></label>';
+  }).join('');
+  $$('#skills input').forEach(function(inp){
+    inp.onchange=function(){
+      var i=parseInt(inp.getAttribute('data-sk'),10),pos=rf.skills.indexOf(i);
+      if(inp.checked){if(pos<0)rf.skills.push(i);}else if(pos>=0)rf.skills.splice(pos,1);
+      inp.parentNode.classList.toggle('done',inp.checked);saveRf(false);
+    };
+  });
+}
+function saveRf(show){
+  rf.date=new Date().toLocaleString('ru-RU');
+  store.set('reflect',rf);updateProgress();
+  var box=$('#rfSaved');box.style.display='block';
+  box.innerHTML='✅ <b>Сохранено '+rf.date+'</b><br>Ступень: '+(rf.lv||'—')+' · Настроение: '+(rf.mood||'—')+
+    ' · Умений: '+rf.skills.length+' из 5';
+  if(show)toast('Рефлексия сохранена 💾');
+}
+function copyRf(){
+  var b=store.get('best','—');
+  var txt='Рефлексия · Алгебра 7 · Графический метод (7.4.2.4)\nДата: '+new Date().toLocaleString('ru-RU')+
+   '\nЛестница успеха: '+(rf.lv||'—')+' · Настроение: '+(rf.mood||'—')+
+   '\nУмения: '+rf.skills.length+'/5\nТест (лучший): '+b+'/10'+
+   '\nСегодня я узнал(а): '+(rf.t[0]||'—')+'\nМне было трудно: '+(rf.t[1]||'—')+
+   '\nТеперь я умею: '+(rf.t[2]||'—')+'\nВопрос учителю: '+(rf.t[3]||'—');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){toast('Итог скопирован 📋');},function(){fallbackCopy(txt);});
+  }else fallbackCopy(txt);
+}
+function fallbackCopy(txt){
+  var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');toast('Итог скопирован 📋');}catch(e){toast('Скопируй текст вручную');}
+  document.body.removeChild(ta);
+}
+
+/* ---------- ДЗ ---------- */
+function renderHw(){
+  $('#hwList').innerHTML=HW_ITEMS.map(function(t,i){
+    var on=hw.indexOf(i)>=0;
+    return '<label class="chk '+(on?'done':'')+'"><input type="checkbox" data-hw="'+i+'" '+(on?'checked':'')+'><span>'+t+'</span></label>';
+  }).join('');
+  $$('#hwList input').forEach(function(inp){
+    inp.onchange=function(){
+      var i=parseInt(inp.getAttribute('data-hw'),10),pos=hw.indexOf(i);
+      if(inp.checked){if(pos<0)hw.push(i);}else if(pos>=0)hw.splice(pos,1);
+      store.set('hw',hw);renderHw();updateProgress();
+      if(hw.length===HW_ITEMS.length){toast('Домашнее задание выполнено! 🎉');confetti(40);}
+    };
+  });
+  $('#hwCount').textContent=hw.length+' / '+HW_ITEMS.length;
+}
+
+/* ---------- ПРОГРЕСС ---------- */
+function updateProgress(){
+  var v=Math.min(visited.length,5)/5*20;
+  var td=0;TASKS.forEach(function(t){if(tasksDone[t.id])td++;});
+  var tp=td/TASKS.length*20;
+  var test=store.get('best',0)/10*30;
+  var rp=store.get('reflect',{lv:0}).lv?15:0;
+  var hp=store.get('hw',[]).length/HW_ITEMS.length*15;
+  var total=Math.min(100,Math.round(v+tp+test+rp+hp));
+  $('#topProgress').style.width=total+'%';
+  var b=store.get('best',null);
+  $('#homeProgress').innerHTML='Пройдено: <b>'+total+'%</b><br>Тест: '+(b===null?'ещё не пройден':b+'/10')+
+    ' · Д/З: '+store.get('hw',[]).length+'/'+HW_ITEMS.length;
+}
+
+/* ---------- ИНИЦИАЛИЗАЦИЯ ---------- */
+function init(){
+  setTheme(store.get('theme','light'));
+
+  /* теория */
+  var FIG={
+    intersect:{lines:[{k:1,b:1,c:'var(--l1)'},{k:-1,b:3,c:'var(--l2)'}],point:{x:1,y:2}},
+    steps:{lines:[{k:1,b:1,c:'var(--l1)',label:'y = x + 1'},{k:-1,b:3,c:'var(--l2)',label:'y = −x + 3'}],point:{x:1,y:2}},
+    parallel:{lines:[{k:2,b:1,c:'var(--l1)'},{k:2,b:-3,c:'var(--l2)'}],point:null},
+    same:{lines:[{k:1,b:1,c:'var(--l1)',w:8},{k:1,b:1,c:'var(--l2)',w:2.5,dash:'9 7'}],point:null},
+    build:{lines:[{k:0.5,b:1,c:'var(--l1)',label:'y = 0,5x + 1'}],dots:[{x:0,y:1},{x:2,y:2}]}
+  };
+  $$('[data-g]').forEach(function(s){var f=FIG[s.getAttribute('data-g')];if(f)drawGraph(s,f);});
+
+  /* герой */
+  var heroSeq=[{k1:1,b1:1,k2:-1,b2:3,t:'Пересекаются → 1 решение'},
+               {k1:2,b1:1,k2:2,b2:-3,t:'Параллельны → решений нет'},
+               {k1:2,b1:-1,k2:1,b2:1,t:'Точка пересечения (2; 3)'}];
+  var hi=0,ht=null;
+  function heroDraw(){
+    var s=heroSeq[hi];
+    drawGraph($('#heroFig'),sysCfg(s.k1,s.b1,s.k2,s.b2,true,false));
+    $('#heroCap').textContent=s.t;
+  }
+  function heroCycle(){clearInterval(ht);ht=setInterval(function(){hi=(hi+1)%heroSeq.length;heroDraw();},3000);}
+  heroDraw();heroCycle();
+  $('#heroBox').onclick=function(){hi=(hi+1)%heroSeq.length;heroDraw();heroCycle();};
+
+  /* практикум */
+  ['k1','b1','k2','b2'].forEach(function(k){
+    $('#r'+k).addEventListener('input',function(){S[k]=parseFloat(this.value);$('#n'+k).value=S[k];renderPractice();});
+    $('#n'+k).addEventListener('input',function(){
+      var v=parseFloat(this.value);if(isNaN(v))return;S[k]=clamp(v);$('#r'+k).value=S[k];renderPractice();});
+  });
+  $$('#presets .chip').forEach(function(b){
+    b.onclick=function(){
+      var p=PRESETS[b.getAttribute('data-p')];
+      S={k1:p.k1,b1:p.b1,k2:p.k2,b2:p.b2};
+      $$('#presets .chip').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');syncAll();renderPractice();
+    };
+  });
+  syncAll();renderPractice();
+
+  /* тренажёр */
+  $('#trNext').onclick=trNew;
+  $('#trReset').onclick=function(){trScore=0;trTotal=0;trStreak=0;store.set('trScore',0);store.set('trTotal',0);
+    $('#trStreak').textContent='';trNew();toast('Счёт сброшен');};
+  trNew();
+
+  /* тест */
+  bestText();
+  $('#startTest').onclick=startTest;
+  $('#retryTest').onclick=startTest;
+  $('#qPrev').onclick=function(){if(qi>0){qi--;renderQ();}};
+  $('#qNext').onclick=function(){if(answers[qi]===null)return;if(qi<quiz.length-1){qi++;renderQ();}else finishTest();};
+
+  /* рефлексия */
+  renderSkills();paintRf();
+  $$('#ladder .lad').forEach(function(b){b.onclick=function(){rf.lv=parseInt(b.getAttribute('data-lv'),10);paintRf();saveRf(false);};});
+  $$('#moods .mood').forEach(function(b){b.onclick=function(){rf.mood=b.getAttribute('data-m');paintRf();saveRf(false);};});
+  ['rf1','rf2','rf3','rf4'].forEach(function(id,i){$('#'+id).addEventListener('input',function(){rf.t[i]=this.value;});});
+  $('#rfSave').onclick=function(){saveRf(true);};
+  $('#rfCopy').onclick=copyRf;
+  $('#rfPrint').onclick=function(){window.print();};
+
+  /* дз */
+  renderHw();
+  updateProgress();
+  go(location.hash.slice(1)||'home');
+}
+init();
+</script>
+</body>
+</html>
